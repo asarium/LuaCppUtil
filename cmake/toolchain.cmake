@@ -1,0 +1,5 @@
+
+if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
+	include(toolchain-gcc)
+ENDIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
+	

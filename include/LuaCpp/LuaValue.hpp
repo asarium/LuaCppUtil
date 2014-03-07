@@ -70,7 +70,7 @@ namespace luacpp
 		 * @brief Initializes the lua value
 		 *
 		 * The instance does not point to a lua-value after the constructor has finished. To reference
-		 * a value use #setReference(const LuaReference&)
+		 * a value use #setReference(LuaReferencePtr)
 		 *
 		 * @param state The lua state
 		 */
@@ -217,7 +217,7 @@ namespace luacpp
 
 	/**
 	* @brief Checks if the other value is bigger than this value.
-	* @param rhs The left lua value.
+	* @param lhs The left lua value.
 	* @param rhs The right lua value.
 	* @return `true` when the second value is bigger than this value as specified
 	* 			by lua.

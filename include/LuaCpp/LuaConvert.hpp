@@ -59,6 +59,8 @@ namespace luacpp
 		 *
 		 * @param luaState The lua_State which should be checked
 		 * @param target The location where the value should be stored
+		 * @param stackPos The position of the value that should be used. Defaults to -1
+		 * @param remove @c true to remove the value from the stack, @c false to leave it on the stack
 		 * @return @c true when the value could successfully be converted,
 		 * 		@c false if the topmost value is not of the right type.
 		 */

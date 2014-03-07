@@ -79,10 +79,10 @@ namespace luacpp
 		 * @brief Sets a new reference.
 		 * This overload checks if the passed reference is a table
 		 * 
-		 * @param ref The new reference
+		 * @param reference The new reference
 		 * @return void
 		 */
-		void setReference(LuaReferencePtr ref) override;
+		void setReference(LuaReferencePtr reference) override;
 
 		/**
 		 * @brief Adds a value to this lua table.

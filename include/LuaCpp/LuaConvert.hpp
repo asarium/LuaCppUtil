@@ -2,8 +2,6 @@
 #define LUAUTIL_H
 #pragma once
 
-#include <type_traits>
-
 #include "LuaCpp/LuaHeaders.hpp"
 #include <LuaCpp/LuaException.hpp>
 
@@ -77,8 +75,7 @@ namespace luacpp
 		 * @return ValueType The type of value to be poped from the stack, must have a default and copy constructor.
 		 */
 		template<class ValueType>
-		typename std::enable_if<std::is_default_constructible<ValueType>::value && std::is_copy_constructible<ValueType>::value, ValueType>::type
-		popValue(lua_State* luaState, int stackPos = -1, bool remove = true)
+		ValueType popValue(lua_State* luaState, int stackPos = -1, bool remove = true)
 		{
 			ValueType target;
 

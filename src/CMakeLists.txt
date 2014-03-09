@@ -22,8 +22,13 @@ SET(HEADERS
 add_library(luacpputil STATIC ${SOURCES} ${HEADERS})
 
 find_package(Lua51 REQUIRED)
-target_link_libraries(luacpputil ${LUA_LIBRARIES})
-target_include_directories(luacpputil PUBLIC ${LUA_INCLUDE_DIR})
+
+if(DEFINED LUA_TARGET)
+	target_link_libraries(luacpputil ${LUA_TARGET})
+else(DEFINED LUA_TARGET)
+	target_link_libraries(luacpputil ${LUA_LIBRARIES})
+	target_include_directories(luacpputil PUBLIC ${LUA_INCLUDE_DIR})
+endif(DEFINED LUA_TARGET)
 
 find_package(Boost REQUIRED)
 

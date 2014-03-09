@@ -5,6 +5,7 @@ set(SOURCES
 	LuaConvert.cpp
 	LuaReference.cpp
 	LuaValue.cpp
+	LuaUtil.cpp
 )
 
 SET(HEADERS

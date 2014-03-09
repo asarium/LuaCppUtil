@@ -77,6 +77,8 @@ namespace luacpp
 				list.push_back(table.getValue<typename Container::value_type>(i));
 			}
 		}
+
+		const char* getValueName(ValueType type);
 	}
 }
 

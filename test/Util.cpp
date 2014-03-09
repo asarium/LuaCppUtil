@@ -40,3 +40,17 @@ TEST_F(LuaUtilTest, TableToList)
 	ASSERT_TRUE(valueList[0] == "test1");
 	ASSERT_TRUE(valueList[1] == "test2");
 }
+
+TEST_F(LuaUtilTest, GetValueName)
+{
+	ASSERT_STREQ("none", luacpp::util::getValueName(ValueType::NONE));
+	ASSERT_STREQ("nil", luacpp::util::getValueName(ValueType::NIL));
+	ASSERT_STREQ("boolean", luacpp::util::getValueName(ValueType::BOOLEAN));
+	ASSERT_STREQ("light userdata", luacpp::util::getValueName(ValueType::LIGHTUSERDATA));
+	ASSERT_STREQ("string", luacpp::util::getValueName(ValueType::STRING));
+	ASSERT_STREQ("number", luacpp::util::getValueName(ValueType::NUMBER));
+	ASSERT_STREQ("table", luacpp::util::getValueName(ValueType::TABLE));
+	ASSERT_STREQ("function", luacpp::util::getValueName(ValueType::FUNCTION));
+	ASSERT_STREQ("userdata", luacpp::util::getValueName(ValueType::USERDATA));
+	ASSERT_STREQ("thread", luacpp::util::getValueName(ValueType::THREAD));
+}

@@ -61,6 +61,8 @@ namespace luacpp
 			return retVal;
 		}
 
+		static LuaValue createNil(lua_State* L);
+
 		/**
 		 * @brief Default constructor, creates an invalid LuaValue
 		 */

@@ -38,6 +38,17 @@ namespace
 
 namespace luacpp
 {
+	LuaValue LuaValue::createNil(lua_State* L)
+	{
+		lua_pushnil(L);
+
+		LuaValue val(L);
+
+		val.setReference(LuaReference::create(L));
+
+		return val;
+	}
+
 	LuaValue::LuaValue(lua_State* state) : luaState(state), luaType(ValueType::NONE)
 	{
 		if (state == nullptr)

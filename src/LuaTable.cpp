@@ -89,6 +89,15 @@ namespace luacpp
 
 	bool LuaTableIterator::toNext()
 	{
-		return lua_next(parent->luaState, -2) != 0;
+		if (lua_next(parent->luaState, -2) == 0)
+		{
+			// Pop the table we are iterating
+			lua_pop(parent->luaState, 1);
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 }

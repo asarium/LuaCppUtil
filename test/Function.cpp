@@ -139,7 +139,11 @@ TEST_F(LuaFunctionTest, SetReference)
 		lua_pushliteral(L, "abc");
 		ASSERT_THROW(func.setReference(LuaReference::create(L)), LuaException);
 
+		lua_pop(L, 1);
+
 		lua_getglobal(L, "type");
 		ASSERT_NO_THROW(func.setReference(LuaReference::create(L)));
+
+		lua_pop(L, 1);
 	}
 }

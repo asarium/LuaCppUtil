@@ -5,16 +5,18 @@
 
 using namespace luacpp;
 
-class LuaReferenceTest : public LuaStateTest
+class LuaValueTest : public LuaStateTest
 {};
 
-TEST_F(LuaReferenceTest, SetReference)
+TEST_F(LuaValueTest, SetReference)
 {
 	LuaValue val = LuaValue::createValue(L, "TestTest");
 
 	lua_pushnumber(L, 42.0);
 
 	val.setReference(LuaReference::create(L));
+
+	lua_pop(L, 1);
 
 	ASSERT_EQ(ValueType::NUMBER, val.getValueType());
 	ASSERT_DOUBLE_EQ(42.0, val.getValue<double>());

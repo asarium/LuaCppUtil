@@ -1,6 +1,5 @@
 
 #include <LuaCpp/LuaReference.hpp>
-#include <lauxlib.h>
 #include <LuaCpp/LuaException.hpp>
 
 #include "LuaCpp/LuaHeaders.hpp"

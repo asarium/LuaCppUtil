@@ -58,6 +58,9 @@ namespace luacpp
 
 			retVal.setReference(LuaReference::create(state));
 
+			// Remove the value again
+			lua_pop(state, 1);
+
 			return retVal;
 		}
 

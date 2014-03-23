@@ -20,6 +20,8 @@ public:
 
 	virtual void TearDown() override
 	{
+		ASSERT_EQ(0, lua_gettop(L));
+
 		lua_close(L);
 	}
 };

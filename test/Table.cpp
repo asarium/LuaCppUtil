@@ -12,6 +12,7 @@ class LuaTableTest : public LuaStateTest
 
 TEST_F(LuaTableTest, AddValue)
 {
+	auto top = lua_gettop(L);
 	LuaTable table = LuaTable::create(L);
 	table.addValue("key", "value");
 	
@@ -21,6 +22,8 @@ TEST_F(LuaTableTest, AddValue)
 
 	ASSERT_TRUE(lua_isstring(L, -1) == 1);
 	ASSERT_STREQ("value", lua_tostring(L, -1));
+
+	lua_pop(L, 2); // Pop value and table
 }
 
 TEST_F(LuaTableTest, SetReference)
@@ -30,8 +33,12 @@ TEST_F(LuaTableTest, SetReference)
 	lua_pushliteral(L, "abc");
 	ASSERT_THROW(table.setReference(LuaReference::create(L)), LuaException);
 
+	lua_pop(L, 1);
+
 	lua_newtable(L);
 	ASSERT_NO_THROW(table.setReference(LuaReference::create(L)));
+
+	lua_pop(L, 1);
 }
 
 TEST_F(LuaTableTest, GetValue)
@@ -95,5 +102,49 @@ TEST_F(LuaTableTest, Iterator)
 
 	EXPECT_TRUE(convert::popValue(L, table));
 
-	table.iterator();
+	auto iter = table.iterator();
+
+	int i = 0;
+	while (iter.toNext())
+	{
+		switch (i)
+		{
+		case 0:
+		{
+			ASSERT_STREQ("value1", lua_tostring(L, -1));
+			lua_pop(L, 1);
+
+			ASSERT_DOUBLE_EQ(1.0, lua_tonumber(L, -1));
+			break;
+		}
+		case 1:
+		{
+			ASSERT_STREQ("value2", lua_tostring(L, -1));
+			lua_pop(L, 1);
+
+			ASSERT_DOUBLE_EQ(2.0, lua_tonumber(L, -1));
+			break;
+		}
+		case 2:
+		{
+			ASSERT_STREQ("value3", lua_tostring(L, -1));
+			lua_pop(L, 1);
+
+			ASSERT_DOUBLE_EQ(3.0, lua_tonumber(L, -1));
+			break;
+		}
+		case 3:
+		{
+			ASSERT_STREQ("value4", lua_tostring(L, -1));
+			lua_pop(L, 1);
+
+			ASSERT_STREQ("key", lua_tostring(L, -1));
+			break;
+		}
+		default:
+			FAIL();
+			break;
+		}
+		++i;
+	}
 }

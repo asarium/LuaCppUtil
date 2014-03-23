@@ -21,10 +21,15 @@ TEST_F(LuaReferenceTest, Create)
 		// This may not modify the stack!
 		ASSERT_EQ(top, lua_gettop(L));
 
+		// Remove the two values again
+		lua_pop(L, 2);
+
 		ref->pushValue();
 
 		ASSERT_TRUE(lua_isboolean(L, -1) == 1);
 		ASSERT_TRUE(lua_toboolean(L, -1) == 1);
+
+		lua_pop(L, 1);
 	}
 }
 
@@ -40,6 +45,8 @@ TEST_F(LuaReferenceTest, IsValid)
 
 		LuaReferencePtr refPtr = LuaReference::create(L);
 
+		lua_pop(L, 1);
+
 		ASSERT_TRUE(refPtr->isValid());
 
 		refPtr->removeReference();
@@ -53,6 +60,8 @@ TEST_F(LuaReferenceTest, RemoveReference)
 	lua_pushboolean(L, 1);
 
 	LuaReferencePtr refPtr = LuaReference::create(L);
+
+	lua_pop(L, 1);
 
 	ASSERT_TRUE(refPtr->removeReference());
 
@@ -71,4 +80,6 @@ TEST_F(LuaReferenceTest, PushValue)
 
 	ASSERT_TRUE(lua_isboolean(L, -1) == 1);
 	ASSERT_EQ(1, lua_toboolean(L, -1));
+
+	lua_pop(L, 1);
 }

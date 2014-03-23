@@ -26,6 +26,8 @@ TEST_F(LuaConvertTest, PushDouble)
 
 	ASSERT_TRUE(lua_isnumber(L, -1) == 1);
 	ASSERT_DOUBLE_EQ(1.0, lua_tonumber(L, -1));
+
+	lua_pop(L, 1);
 }
 
 TEST_F(LuaConvertTest, PushFloat)
@@ -34,6 +36,8 @@ TEST_F(LuaConvertTest, PushFloat)
 
 	ASSERT_TRUE(lua_isnumber(L, -1) == 1);
 	ASSERT_DOUBLE_EQ(1.0, lua_tonumber(L, -1));
+
+	lua_pop(L, 1);
 }
 
 TEST_F(LuaConvertTest, PushInt)
@@ -42,6 +46,8 @@ TEST_F(LuaConvertTest, PushInt)
 
 	ASSERT_TRUE(lua_isnumber(L, -1) == 1);
 	ASSERT_DOUBLE_EQ(1.0, lua_tonumber(L, -1));
+
+	lua_pop(L, 1);
 }
 
 TEST_F(LuaConvertTest, PushSizeT)
@@ -50,6 +56,8 @@ TEST_F(LuaConvertTest, PushSizeT)
 
 	ASSERT_TRUE(lua_isnumber(L, -1) == 1);
 	ASSERT_DOUBLE_EQ(1.0, lua_tonumber(L, -1));
+
+	lua_pop(L, 1);
 }
 
 TEST_F(LuaConvertTest, PushStdString)
@@ -59,6 +67,8 @@ TEST_F(LuaConvertTest, PushStdString)
 
 	ASSERT_TRUE(lua_isstring(L, -1) == 1);
 	ASSERT_STREQ("TestTest", lua_tostring(L, -1));
+
+	lua_pop(L, 1);
 }
 
 TEST_F(LuaConvertTest, PushString)
@@ -68,6 +78,8 @@ TEST_F(LuaConvertTest, PushString)
 
 	ASSERT_TRUE(lua_isstring(L, -1) == 1);
 	ASSERT_STREQ(string, lua_tostring(L, -1));
+
+	lua_pop(L, 1);
 }
 
 TEST_F(LuaConvertTest, PushBool)
@@ -77,10 +89,14 @@ TEST_F(LuaConvertTest, PushBool)
 	ASSERT_TRUE(lua_isboolean(L, -1) == 1);
 	ASSERT_TRUE(lua_toboolean(L, -1) == 1);
 
+	lua_pop(L, 1);
+
 	pushValue(L, false);
 
 	ASSERT_TRUE(lua_isboolean(L, -1) == 1);
 	ASSERT_FALSE(lua_toboolean(L, -1) == 1);
+
+	lua_pop(L, 1);
 }
 
 TEST_F(LuaConvertTest, PushCFunction)
@@ -88,6 +104,8 @@ TEST_F(LuaConvertTest, PushCFunction)
 	pushValue(L, &testCFunction);
 
 	ASSERT_TRUE(lua_iscfunction(L, -1) == 1);
+
+	lua_pop(L, 1);
 }
 
 TEST_F(LuaConvertTest, PushValue)
@@ -97,6 +115,8 @@ TEST_F(LuaConvertTest, PushValue)
 	pushValue<LuaValue>(L, table);
 
 	ASSERT_TRUE(lua_istable(L, -1) == 1);
+
+	lua_pop(L, 1);
 }
 
 TEST_F(LuaConvertTest, PushFunction)
@@ -106,6 +126,8 @@ TEST_F(LuaConvertTest, PushFunction)
 	pushValue<LuaValue>(L, func);
 
 	ASSERT_TRUE(lua_isfunction(L, -1) == 1 && !lua_iscfunction(L, -1));
+
+	lua_pop(L, 1);
 }
 
 TEST_F(LuaConvertTest, PopDouble)
@@ -134,6 +156,8 @@ TEST_F(LuaConvertTest, PopDouble)
 
 		double target;
 		ASSERT_FALSE(popValue(L, target));
+
+		lua_pop(L, 1);
 	}
 	{
 		lua_pushnumber(L, 1.0);
@@ -156,6 +180,8 @@ TEST_F(LuaConvertTest, PopDouble)
 		lua_pushliteral(L, "TestTest");
 
 		ASSERT_THROW(popValue<double>(L), LuaException);
+
+		lua_pop(L, 1);
 	}
 }
 
@@ -185,6 +211,8 @@ TEST_F(LuaConvertTest, PopFloat)
 
 		float target;
 		ASSERT_FALSE(popValue(L, target));
+
+		lua_pop(L, 1);
 	}
 }
 
@@ -214,6 +242,8 @@ TEST_F(LuaConvertTest, PopInt)
 
 		int target;
 		ASSERT_FALSE(popValue(L, target));
+
+		lua_pop(L, 1);
 	}
 }
 
@@ -243,6 +273,8 @@ TEST_F(LuaConvertTest, PopSizeT)
 
 		size_t target;
 		ASSERT_FALSE(popValue(L, target));
+
+		lua_pop(L, 1);
 	}
 }
 
@@ -272,6 +304,8 @@ TEST_F(LuaConvertTest, PopStdString)
 
 		std::string target;
 		ASSERT_FALSE(popValue(L, target));
+
+		lua_pop(L, 1);
 	}
 }
 
@@ -301,6 +335,8 @@ TEST_F(LuaConvertTest, PopBool)
 
 		bool target;
 		ASSERT_FALSE(popValue(L, target));
+
+		lua_pop(L, 1);
 	}
 }
 
@@ -330,6 +366,8 @@ TEST_F(LuaConvertTest, PopCFunction)
 
 		lua_CFunction target;
 		ASSERT_FALSE(popValue(L, target));
+
+		lua_pop(L, 1);
 	}
 }
 
@@ -359,6 +397,8 @@ TEST_F(LuaConvertTest, PopLuaTable)
 
 		LuaTable target;
 		ASSERT_FALSE(popValue(L, target));
+
+		lua_pop(L, 1);
 	}
 }
 
@@ -389,6 +429,8 @@ TEST_F(LuaConvertTest, PopLuaFunction)
 
 		LuaFunction target;
 		ASSERT_FALSE(popValue(L, target));
+
+		lua_pop(L, 1);
 	}
 }
 

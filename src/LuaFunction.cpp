@@ -102,10 +102,10 @@ namespace luacpp
 		int err_idx = 0;
 		int stackTop;
 
-		if (errorFunction != nullptr)
+		if (errorFunction)
 		{
 			// push the error function
-			lua_pushcfunction(luaState, errorFunction);
+			errorFunction->pushValue();
 			err_idx = lua_gettop(luaState);
 			stackTop = err_idx;
 		}

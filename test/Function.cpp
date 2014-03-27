@@ -117,7 +117,7 @@ TEST_F(LuaFunctionTest, SetErrorFunction)
 {
 	{
 		LuaFunction func = LuaFunction::createFromCode(L, "invalid()");
-		func.setErrorFunction(&testErrorFunction);
+		func.setErrorFunction(LuaFunction::createFromCFunction(L, &testErrorFunction));
 
 		try
 		{

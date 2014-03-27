@@ -13,6 +13,7 @@
 namespace luacpp
 {
 	typedef std::vector<LuaValue> LuaValueList;
+	class LuaFunction;
 
 	/**
 	 * @brief A reference to lua code.
@@ -80,9 +81,9 @@ namespace luacpp
 		 * 
 		 * @return void
 		 */
-		void setErrorFunction(lua_CFunction errorFunc)
+		void setErrorFunction(const LuaFunction& errorFunc)
 		{
-			errorFunction = errorFunc;
+			errorFunction = errorFunc.getReference();
 		}
 
 		/**
@@ -116,7 +117,7 @@ namespace luacpp
 	private:
 		bool isCFunction; //!< @c true to indicate that this is a C-function, mainly used for checking the values
 
-		lua_CFunction errorFunction;
+		LuaReferencePtr errorFunction;
 	};
 }
 

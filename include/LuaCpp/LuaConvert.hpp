@@ -50,6 +50,18 @@ namespace luacpp
 		}
 
 		/**
+		* @brief Pops a value or throws an exception.
+		* If the conversion of the lua value fails, this function throws an exception.
+		*
+		* @param luaState The lua state
+		* @param stackPos The stack position of the value. Defaults to -1.
+		* @param remove Specifies if the value should be removed. Defaults to true.
+		* @return ValueType The type of value to be poped from the stack, must have a default and copy constructor.
+		*/
+		template<class ValueType>
+		ValueType popValue(lua_State* luaState, int stackPos = -1, bool remove = true);
+
+		/**
 		 * @brief Pops a value from the lua stack and stors it.
 		 *
 		 * This function checks if the topmost value on the lua stack is of the right type and if
@@ -63,29 +75,16 @@ namespace luacpp
 		 * 		@c false if the topmost value is not of the right type.
 		 */
 		template<class ValueType>
-		bool popValue(lua_State* luaState, ValueType& target, int stackPos = -1, bool remove = true);
-
-		/**
-		 * @brief Pops a value or throws an exception.
-		 * If the conversion of the lua value fails, this function throws an exception.
-		 * 
-		 * @param luaState The lua state
-		 * @param stackPos The stack position of the value. Defaults to -1.
-		 * @param remove Specifies if the value should be removed. Defaults to true.
-		 * @return ValueType The type of value to be poped from the stack, must have a default and copy constructor.
-		 */
-		template<class ValueType>
-		ValueType popValue(lua_State* luaState, int stackPos = -1, bool remove = true)
+		bool popValue(lua_State* L, ValueType& target, int stackPos = -1, bool remove = true)
 		{
-			ValueType target;
-
-			if (!popValue(luaState, target, stackPos, remove))
+			try
 			{
-				throw LuaException("Failed to pop lua vale from stack!");
+				target = popValue<ValueType>(L, stackPos, remove);
+				return true;
 			}
-			else
+			catch (LuaException&)
 			{
-				return target;
+				return false;
 			}
 		}
 	}

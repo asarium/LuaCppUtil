@@ -137,31 +137,6 @@ namespace luacpp
 		}
 
 		/**
-		 * @brief Converts the value into the given type
-		 * 
-		 * @param target The new value
-		 * 
-		 * @return bool @c true when the conversion was successful, @c false otherwise
-		 */
-		template<class Type>
-		bool getValue(Type& target) const
-		{
-			// Push the referenced value
-			reference->pushValue();
-
-			// and pop and save it again
-			if (!convert::popValue(luaState, target))
-			{
-				lua_pop(luaState, 1);
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-		}
-
-		/**
 		 * @brief Gets the value or throws an exception
 		 * 
 		 * @return Type The value
@@ -171,14 +146,16 @@ namespace luacpp
 		template<class Type>
 		Type getValue() const
 		{
-			Type target;
-			if (!getValue(target))
+			reference->pushValue();
+
+			try
 			{
-				throw LuaException("Failed to get value!");
+				return convert::popValue<Type>(luaState);
 			}
-			else
+			catch (...)
 			{
-				return target;
+				lua_pop(luaState, 1);
+				throw;
 			}
 		}
 

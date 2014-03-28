@@ -86,8 +86,7 @@ namespace luacpp
 		}
 
 		template<>
-		bool popValue<double>(lua_State* luaState, double& target,
-		                      int stackposition, bool remove)
+		double popValue<double>(lua_State* luaState, int stackposition, bool remove)
 		{
 			if (!isValidIndex(luaState, stackposition))
 			{
@@ -96,102 +95,41 @@ namespace luacpp
 
 			if (!lua_isnumber(luaState, stackposition))
 			{
-				return false;
+				throw LuaException("Specified position is no number!");
 			}
 			else
 			{
-				target = lua_tonumber(luaState, stackposition);
+				double number = lua_tonumber(luaState, stackposition);
 
 				if (remove)
 				{
 					lua_remove(luaState, stackposition);
 				}
 
-				return true;
+				return number;
 			}
 		}
 
 		template<>
-		bool popValue<float>(lua_State* luaState, float& target,
-		                     int stackposition, bool remove)
+		float popValue<float>(lua_State* luaState, int stackposition, bool remove)
 		{
-			if (!isValidIndex(luaState, stackposition))
-			{
-				throw LuaException("Specified stack position is not valid!");
-			}
-
-			if (!lua_isnumber(luaState, stackposition))
-			{
-				return false;
-			}
-			else
-			{
-				target = static_cast<float>(lua_tonumber(luaState, stackposition));
-
-				if (remove)
-				{
-					lua_remove(luaState, stackposition);
-				}
-
-				return true;
-			}
+			return static_cast<float>(popValue<double>(luaState, stackposition, remove));
 		}
 
 		template<>
-		bool popValue<int>(lua_State* luaState, int& target,
-		                   int stackposition, bool remove)
+		int popValue<int>(lua_State* luaState, int stackposition, bool remove)
 		{
-			if (!isValidIndex(luaState, stackposition))
-			{
-				throw LuaException("Specified stack position is not valid!");
-			}
-
-			if (!lua_isnumber(luaState, stackposition))
-			{
-				return false;
-			}
-			else
-			{
-				target = static_cast<int>(lua_tonumber(luaState, stackposition));
-
-				if (remove)
-				{
-					lua_remove(luaState, stackposition);
-				}
-
-				return true;
-			}
+			return static_cast<int>(popValue<double>(luaState, stackposition, remove));
 		}
 
 		template<>
-		bool popValue<size_t>(lua_State* luaState, size_t& target,
-			int stackposition, bool remove)
+		size_t popValue<size_t>(lua_State* luaState, int stackposition, bool remove)
 		{
-			if (!isValidIndex(luaState, stackposition))
-			{
-				throw LuaException("Specified stack position is not valid!");
-			}
-
-			if (!lua_isnumber(luaState, stackposition))
-			{
-				return false;
-			}
-			else
-			{
-				target = static_cast<size_t>(lua_tonumber(luaState, stackposition));
-
-				if (remove)
-				{
-					lua_remove(luaState, stackposition);
-				}
-
-				return true;
-			}
+			return static_cast<size_t>(popValue<double>(luaState, stackposition, remove));
 		}
 
 		template<>
-		bool popValue<std::string>(lua_State* luaState, std::string& target,
-		                           int stackposition, bool remove)
+		std::string popValue<std::string>(lua_State* luaState, int stackposition, bool remove)
 		{
 			if (!isValidIndex(luaState, stackposition))
 			{
@@ -200,10 +138,12 @@ namespace luacpp
 
 			if (!lua_isstring(luaState, stackposition))
 			{
-				return false;
+				throw LuaException("Specified index is no string!");
 			}
 			else
 			{
+				std::string target;
+
 				size_t size;
 				const char* string = lua_tolstring(luaState, stackposition, &size);
 				target.assign(string, size);
@@ -213,13 +153,12 @@ namespace luacpp
 					lua_remove(luaState, stackposition);
 				}
 
-				return true;
+				return target;
 			}
 		}
 
 		template<>
-		bool popValue<bool>(lua_State* luaState, bool& target,
-		                    int stackposition, bool remove)
+		bool popValue<bool>(lua_State* luaState, int stackposition, bool remove)
 		{
 			if (!isValidIndex(luaState, stackposition))
 			{
@@ -228,24 +167,23 @@ namespace luacpp
 
 			if (!lua_isboolean(luaState, stackposition))
 			{
-				return false;
+				throw LuaException("Specified index is no boolean value!");
 			}
 			else
 			{
-				target = lua_toboolean(luaState, stackposition) != 0;
+				bool target = lua_toboolean(luaState, stackposition) != 0;
 
 				if (remove)
 				{
 					lua_remove(luaState, stackposition);
 				}
 
-				return true;
+				return target;
 			}
 		}
 
 		template<>
-		bool popValue<lua_CFunction>(lua_State* luaState,
-		                             lua_CFunction& target, int stackposition, bool remove)
+		lua_CFunction popValue<lua_CFunction>(lua_State* luaState, int stackposition, bool remove)
 		{
 			if (!isValidIndex(luaState, stackposition))
 			{
@@ -254,41 +192,36 @@ namespace luacpp
 
 			if (!lua_iscfunction(luaState, stackposition))
 			{
-				return false;
+				throw LuaException("Specified index is no C-function!");
 			}
 			else
 			{
-				target = lua_tocfunction(luaState, stackposition);
+				lua_CFunction target = lua_tocfunction(luaState, stackposition);
 
 				if (remove)
 				{
 					lua_remove(luaState, stackposition);
 				}
 
-				return true;
+				return target;
 			}
 		}
 
 		template<>
-		bool popValue<LuaTable>(lua_State* luaState, LuaTable& target,
-		                        int stackposition, bool remove)
+		LuaTable popValue<LuaTable>(lua_State* luaState, int stackposition, bool remove)
 		{
 			if (!isValidIndex(luaState, stackposition))
 			{
 				throw LuaException("Specified stack position is not valid!");
-			}
-
-			if (target.luaState != nullptr && luaState != target.luaState)
-			{
-				throw LuaException("Lua state mismatch detected!");
 			}
 
 			if (!lua_istable(luaState, stackposition))
 			{
-				return false;
+				throw LuaException("Specified index is no table!");
 			}
 			else
 			{
+				LuaTable target;
 				target.setReference(LuaReference::create(luaState, stackposition));
 
 				if (remove)
@@ -296,30 +229,25 @@ namespace luacpp
 					lua_remove(luaState, stackposition);
 				}
 
-				return true;
+				return target;
 			}
 		}
 
 		template<>
-		bool popValue<LuaFunction>(lua_State* luaState, LuaFunction& target,
-		                           int stackposition, bool remove)
+		LuaFunction popValue<LuaFunction>(lua_State* luaState, int stackposition, bool remove)
 		{
 			if (!isValidIndex(luaState, stackposition))
 			{
 				throw LuaException("Specified stack position is not valid!");
-			}
-
-			if (target.luaState != nullptr && luaState != target.luaState)
-			{
-				throw LuaException("Lua state mismatch detected!");
 			}
 
 			if (!lua_isfunction(luaState, stackposition))
 			{
-				return false;
+				throw LuaException("Specified index is no function!");
 			}
 			else
 			{
+				LuaFunction target;
 				target.setReference(LuaReference::create(luaState, stackposition));
 
 				if (remove)
@@ -327,24 +255,19 @@ namespace luacpp
 					lua_remove(luaState, stackposition);
 				}
 
-				return true;
+				return target;
 			}
 		}
 
 		template<>
-		bool popValue<LuaValue>(lua_State* luaState, LuaValue& target,
-		                        int stackposition, bool remove)
+		LuaValue popValue<LuaValue>(lua_State* luaState, int stackposition, bool remove)
 		{
 			if (!isValidIndex(luaState, stackposition))
 			{
 				throw LuaException("Specified stack position is not valid!");
 			}
 
-			if (target.luaState != nullptr && luaState != target.luaState)
-			{
-				throw LuaException("Lua state mismatch detected!");
-			}
-
+			LuaValue target;
 			target.setReference(LuaReference::create(luaState, stackposition));
 
 			if (remove)
@@ -352,7 +275,7 @@ namespace luacpp
 				lua_remove(luaState, stackposition);
 			}
 
-			return true;
+			return target;
 		}
 	}
 }

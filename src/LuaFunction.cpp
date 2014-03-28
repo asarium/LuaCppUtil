@@ -132,7 +132,7 @@ namespace luacpp
 			LuaValueList values;
 			values.reserve(numReturn);
 
-			LuaValue val(luaState);
+			LuaValue val;
 			for (int i = 0; i < numReturn; ++i)
 			{
 				auto top = lua_gettop(luaState);

@@ -10,6 +10,8 @@ class LuaValueTest : public LuaStateTest
 
 TEST_F(LuaValueTest, SetReference)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	LuaValue val = LuaValue::createValue(L, "TestTest");
 
 	lua_pushnumber(L, 42.0);

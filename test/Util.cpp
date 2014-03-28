@@ -12,6 +12,8 @@ class LuaUtilTest : public LuaStateTest
 
 TEST_F(LuaUtilTest, TableListPairs)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	LuaTable table = LuaTable::create(L);
 	table.addValue(1, "test1");
 	table.addValue(2, "test2");
@@ -28,6 +30,8 @@ TEST_F(LuaUtilTest, TableListPairs)
 
 TEST_F(LuaUtilTest, TableToList)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	LuaTable table = LuaTable::create(L);
 	table.addValue(1, "test1");
 	table.addValue(2, "test2");
@@ -43,6 +47,8 @@ TEST_F(LuaUtilTest, TableToList)
 
 TEST_F(LuaUtilTest, GetValueName)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	ASSERT_STREQ("none", luacpp::util::getValueName(ValueType::NONE));
 	ASSERT_STREQ("nil", luacpp::util::getValueName(ValueType::NIL));
 	ASSERT_STREQ("boolean", luacpp::util::getValueName(ValueType::BOOLEAN));

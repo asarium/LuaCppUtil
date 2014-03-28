@@ -11,6 +11,8 @@ class LuaReferenceTest : public LuaStateTest
 TEST_F(LuaReferenceTest, Create)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushboolean(L, 1);
 		lua_pushnumber(L, 42.0);
 
@@ -36,11 +38,15 @@ TEST_F(LuaReferenceTest, Create)
 TEST_F(LuaReferenceTest, IsValid)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		LuaReference ref;
 
 		ASSERT_FALSE(ref.isValid());
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushboolean(L, 1);
 
 		LuaReferencePtr refPtr = LuaReference::create(L);
@@ -57,6 +63,8 @@ TEST_F(LuaReferenceTest, IsValid)
 
 TEST_F(LuaReferenceTest, RemoveReference)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	lua_pushboolean(L, 1);
 
 	LuaReferencePtr refPtr = LuaReference::create(L);
@@ -70,6 +78,8 @@ TEST_F(LuaReferenceTest, RemoveReference)
 
 TEST_F(LuaReferenceTest, PushValue)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	lua_pushboolean(L, 1);
 
 	LuaReferencePtr refPtr = LuaReference::create(L);

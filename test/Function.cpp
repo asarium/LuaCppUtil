@@ -29,9 +29,13 @@ class LuaFunctionTest : public LuaStateTest
 TEST_F(LuaFunctionTest, CreateFromCode)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		ASSERT_THROW(LuaFunction::createFromCode(L, "/\\invalid"), luacpp::LuaException);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		ASSERT_NO_THROW(LuaFunction::createFromCode(L, "return 1 + 1"));
 	}
 }
@@ -39,6 +43,8 @@ TEST_F(LuaFunctionTest, CreateFromCode)
 TEST_F(LuaFunctionTest, Call)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		// Test execution with failure
 		LuaFunction function = LuaFunction::createFromCode(L, "invalid()");
 
@@ -46,6 +52,8 @@ TEST_F(LuaFunctionTest, Call)
 		ASSERT_THROW(function(), luacpp::LuaException);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		// Test execution without failure
 		LuaFunction function = LuaFunction::createFromCode(L, "local a = 1");
 
@@ -53,6 +61,8 @@ TEST_F(LuaFunctionTest, Call)
 		ASSERT_NO_THROW(function());
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		// Test execution without failure
 		LuaFunction function = LuaFunction::createFromCode(L, "return 'abc', 5");
 
@@ -66,6 +76,8 @@ TEST_F(LuaFunctionTest, Call)
 		ASSERT_EQ(5, returnValues[1].getValue<int>());
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_getglobal(L, "type");
 
 		LuaFunction func;
@@ -83,6 +95,8 @@ TEST_F(LuaFunctionTest, Call)
 TEST_F(LuaFunctionTest, SetEnvironment)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		// Setup environment table
 		LuaTable envionment = LuaTable::create(L);
 		envionment.addValue("key", "Test");
@@ -103,6 +117,8 @@ TEST_F(LuaFunctionTest, SetEnvironment)
 TEST_F(LuaFunctionTest, SetCFunction)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		LuaFunction func = LuaFunction::createFromCFunction(L, testCFunction);
 
 		LuaValueList retVals = func();
@@ -116,6 +132,8 @@ TEST_F(LuaFunctionTest, SetCFunction)
 TEST_F(LuaFunctionTest, SetErrorFunction)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		LuaFunction func = LuaFunction::createFromCode(L, "invalid()");
 		func.setErrorFunction(LuaFunction::createFromCFunction(L, &testErrorFunction));
 
@@ -134,6 +152,8 @@ TEST_F(LuaFunctionTest, SetErrorFunction)
 TEST_F(LuaFunctionTest, SetReference)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		LuaFunction func = LuaFunction::createFromCode(L, "invalid()");
 		
 		lua_pushliteral(L, "abc");

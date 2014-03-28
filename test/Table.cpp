@@ -12,6 +12,8 @@ class LuaTableTest : public LuaStateTest
 
 TEST_F(LuaTableTest, AddValue)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	auto top = lua_gettop(L);
 	LuaTable table = LuaTable::create(L);
 	table.addValue("key", "value");
@@ -28,6 +30,8 @@ TEST_F(LuaTableTest, AddValue)
 
 TEST_F(LuaTableTest, SetReference)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	LuaTable table = LuaTable::create(L);
 
 	lua_pushliteral(L, "abc");
@@ -43,6 +47,8 @@ TEST_F(LuaTableTest, SetReference)
 
 TEST_F(LuaTableTest, GetValue)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	lua_newtable(L);
 	lua_pushstring(L, "value");
 	lua_setfield(L, -2, "key");
@@ -58,6 +64,8 @@ TEST_F(LuaTableTest, GetValue)
 
 TEST_F(LuaTableTest, GetLength)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	lua_newtable(L);
 
 	lua_pushnumber(L, 1);
@@ -81,6 +89,8 @@ TEST_F(LuaTableTest, GetLength)
 
 TEST_F(LuaTableTest, Iterator)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	lua_newtable(L);
 
 	lua_pushnumber(L, 1);

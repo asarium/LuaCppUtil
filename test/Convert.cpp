@@ -22,6 +22,8 @@ class LuaConvertTest : public LuaStateTest
 
 TEST_F(LuaConvertTest, PushDouble)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	pushValue(L, 1.0);
 
 	ASSERT_TRUE(lua_isnumber(L, -1) == 1);
@@ -32,6 +34,8 @@ TEST_F(LuaConvertTest, PushDouble)
 
 TEST_F(LuaConvertTest, PushFloat)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	pushValue(L, 1.0f);
 
 	ASSERT_TRUE(lua_isnumber(L, -1) == 1);
@@ -42,6 +46,8 @@ TEST_F(LuaConvertTest, PushFloat)
 
 TEST_F(LuaConvertTest, PushInt)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	pushValue(L, 1);
 
 	ASSERT_TRUE(lua_isnumber(L, -1) == 1);
@@ -52,6 +58,8 @@ TEST_F(LuaConvertTest, PushInt)
 
 TEST_F(LuaConvertTest, PushSizeT)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	pushValue(L, static_cast<size_t>(1));
 
 	ASSERT_TRUE(lua_isnumber(L, -1) == 1);
@@ -62,6 +70,8 @@ TEST_F(LuaConvertTest, PushSizeT)
 
 TEST_F(LuaConvertTest, PushStdString)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	std::string testStr("TestTest");
 	pushValue(L, testStr);
 
@@ -73,6 +83,8 @@ TEST_F(LuaConvertTest, PushStdString)
 
 TEST_F(LuaConvertTest, PushString)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	const char* string = "TestTest";
 	pushValue(L, string);
 
@@ -84,6 +96,8 @@ TEST_F(LuaConvertTest, PushString)
 
 TEST_F(LuaConvertTest, PushBool)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	pushValue(L, true);
 
 	ASSERT_TRUE(lua_isboolean(L, -1) == 1);
@@ -101,6 +115,8 @@ TEST_F(LuaConvertTest, PushBool)
 
 TEST_F(LuaConvertTest, PushCFunction)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	pushValue(L, &testCFunction);
 
 	ASSERT_TRUE(lua_iscfunction(L, -1) == 1);
@@ -110,6 +126,8 @@ TEST_F(LuaConvertTest, PushCFunction)
 
 TEST_F(LuaConvertTest, PushValue)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	LuaTable table = LuaTable::create(L);
 
 	pushValue<LuaValue>(L, table);
@@ -121,6 +139,8 @@ TEST_F(LuaConvertTest, PushValue)
 
 TEST_F(LuaConvertTest, PushFunction)
 {
+	ScopedLuaStackTest stackTest(L);
+
 	LuaFunction func = LuaFunction::createFromCode(L, "return 0");
 
 	pushValue<LuaValue>(L, func);
@@ -133,6 +153,8 @@ TEST_F(LuaConvertTest, PushFunction)
 TEST_F(LuaConvertTest, PopDouble)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		double target;
@@ -141,6 +163,8 @@ TEST_F(LuaConvertTest, PopDouble)
 		ASSERT_DOUBLE_EQ(1.0, target);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		double target;
@@ -152,6 +176,8 @@ TEST_F(LuaConvertTest, PopDouble)
 		lua_pop(L, 1);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushboolean(L, 1);
 
 		double target;
@@ -160,6 +186,8 @@ TEST_F(LuaConvertTest, PopDouble)
 		lua_pop(L, 1);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		double target = popValue<double>(L);
@@ -167,6 +195,8 @@ TEST_F(LuaConvertTest, PopDouble)
 		ASSERT_DOUBLE_EQ(1.0, target);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		double target = popValue<double>(L, -1, false);
@@ -177,6 +207,8 @@ TEST_F(LuaConvertTest, PopDouble)
 		lua_pop(L, 1);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushliteral(L, "TestTest");
 
 		ASSERT_THROW(popValue<double>(L), LuaException);
@@ -188,6 +220,8 @@ TEST_F(LuaConvertTest, PopDouble)
 TEST_F(LuaConvertTest, PopFloat)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		float target;
@@ -196,6 +230,8 @@ TEST_F(LuaConvertTest, PopFloat)
 		ASSERT_FLOAT_EQ(1.0f, target);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		float target;
@@ -207,6 +243,8 @@ TEST_F(LuaConvertTest, PopFloat)
 		lua_pop(L, 1);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushboolean(L, 1);
 
 		ASSERT_THROW(popValue<float>(L), LuaException);
@@ -218,6 +256,8 @@ TEST_F(LuaConvertTest, PopFloat)
 TEST_F(LuaConvertTest, PopInt)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		int target;
@@ -226,6 +266,8 @@ TEST_F(LuaConvertTest, PopInt)
 		ASSERT_EQ(1, target);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		int target;
@@ -237,6 +279,8 @@ TEST_F(LuaConvertTest, PopInt)
 		lua_pop(L, 1);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushboolean(L, 1);
 
 		ASSERT_THROW(popValue<int>(L), LuaException);
@@ -248,6 +292,8 @@ TEST_F(LuaConvertTest, PopInt)
 TEST_F(LuaConvertTest, PopSizeT)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		size_t target;
@@ -256,6 +302,8 @@ TEST_F(LuaConvertTest, PopSizeT)
 		ASSERT_EQ(1, target);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		size_t target;
@@ -267,6 +315,8 @@ TEST_F(LuaConvertTest, PopSizeT)
 		lua_pop(L, 1);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushboolean(L, 1);
 
 		ASSERT_THROW(popValue<size_t>(L), LuaException);
@@ -278,6 +328,8 @@ TEST_F(LuaConvertTest, PopSizeT)
 TEST_F(LuaConvertTest, PopStdString)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushliteral(L, "TestTest");
 
 		std::string target;
@@ -286,6 +338,8 @@ TEST_F(LuaConvertTest, PopStdString)
 		ASSERT_STREQ("TestTest", target.c_str());
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushliteral(L, "TestTest");
 
 		std::string target;
@@ -297,6 +351,8 @@ TEST_F(LuaConvertTest, PopStdString)
 		lua_pop(L, 1);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushboolean(L, 1);
 
 		ASSERT_THROW(popValue<std::string>(L), LuaException);
@@ -308,6 +364,8 @@ TEST_F(LuaConvertTest, PopStdString)
 TEST_F(LuaConvertTest, PopBool)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushboolean(L, 1);
 
 		bool target;
@@ -316,6 +374,8 @@ TEST_F(LuaConvertTest, PopBool)
 		ASSERT_TRUE(target);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushboolean(L, 1);
 
 		bool target;
@@ -327,6 +387,8 @@ TEST_F(LuaConvertTest, PopBool)
 		lua_pop(L, 1);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		ASSERT_THROW(popValue<bool>(L), LuaException);
@@ -338,6 +400,8 @@ TEST_F(LuaConvertTest, PopBool)
 TEST_F(LuaConvertTest, PopCFunction)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushcfunction(L, &testCFunction);
 
 		lua_CFunction target;
@@ -346,6 +410,8 @@ TEST_F(LuaConvertTest, PopCFunction)
 		ASSERT_EQ(target, &testCFunction);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushcfunction(L, &testCFunction);
 
 		lua_CFunction target;
@@ -357,6 +423,8 @@ TEST_F(LuaConvertTest, PopCFunction)
 		lua_pop(L, 1);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		ASSERT_THROW(popValue<lua_CFunction>(L), LuaException);
@@ -368,6 +436,8 @@ TEST_F(LuaConvertTest, PopCFunction)
 TEST_F(LuaConvertTest, PopLuaTable)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_newtable(L);
 
 		LuaTable target;
@@ -376,6 +446,8 @@ TEST_F(LuaConvertTest, PopLuaTable)
 		ASSERT_EQ(ValueType::TABLE, target.getValueType());
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_newtable(L);
 
 		LuaTable target;
@@ -387,6 +459,8 @@ TEST_F(LuaConvertTest, PopLuaTable)
 		lua_pop(L, 1);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		ASSERT_THROW(popValue<LuaTable>(L), LuaException);
@@ -398,6 +472,8 @@ TEST_F(LuaConvertTest, PopLuaTable)
 TEST_F(LuaConvertTest, PopLuaFunction)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		// Put the print function onto the stack
 		lua_getglobal(L, "print");
 
@@ -407,6 +483,8 @@ TEST_F(LuaConvertTest, PopLuaFunction)
 		ASSERT_EQ(ValueType::FUNCTION, target.getValueType());
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_getglobal(L, "print");
 
 		LuaFunction target;
@@ -418,6 +496,8 @@ TEST_F(LuaConvertTest, PopLuaFunction)
 		lua_pop(L, 1);
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		ASSERT_THROW(popValue<LuaFunction>(L), LuaException);
@@ -429,6 +509,8 @@ TEST_F(LuaConvertTest, PopLuaFunction)
 TEST_F(LuaConvertTest, PopLuaValue)
 {
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		LuaValue target;
@@ -437,6 +519,8 @@ TEST_F(LuaConvertTest, PopLuaValue)
 		ASSERT_EQ(ValueType::NUMBER, target.getValueType());
 	}
 	{
+		ScopedLuaStackTest stackTest(L);
+
 		lua_pushnumber(L, 1.0);
 
 		LuaValue target;

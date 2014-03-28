@@ -1,5 +1,6 @@
 
 set(SOURCES
+	LuaArgs.cpp
 	LuaFunction.cpp
 	LuaTable.cpp
 	LuaConvert.cpp
@@ -9,6 +10,7 @@ set(SOURCES
 )
 
 SET(HEADERS
+	${INCLUDE_DIR}/LuaCpp/LuaArgs.hpp
 	${INCLUDE_DIR}/LuaCpp/LuaFunction.hpp
 	${INCLUDE_DIR}/LuaCpp/LuaTable.hpp
 	${INCLUDE_DIR}/LuaCpp/LuaConvert.hpp

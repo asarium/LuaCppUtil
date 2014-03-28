@@ -17,6 +17,7 @@ set_target_properties(gtest_main
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 set(TEST_SRCS
+	Args.cpp
 	Function.cpp
 	Convert.cpp
 	Table.cpp
